@@ -19,9 +19,9 @@ def home():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     print("CHECKING FILES ON RENDER:")
-print("jersey.png exists:", os.path.exists(BASE_DIR + "jersey.png"))
-print("bkg.jpg exists:", os.path.exists(BASE_DIR + "bkg.jpg"))
-print("font.otf exists:", os.path.exists(BASE_DIR + "font.otf"))
+    print("jersey.png exists:", os.path.exists(BASE_DIR + "jersey.png"))
+    print("bkg.jpg exists:", os.path.exists(BASE_DIR + "bkg.jpg"))
+    print("font.otf exists:", os.path.exists(BASE_DIR + "font.otf"))
     update = request.get_json()
     print("UPDATE RECEIVED:", update)
 
