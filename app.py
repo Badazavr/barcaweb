@@ -8,7 +8,7 @@ import requests
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) + os.sep
-BOT_TOKEN = "056560555:AAEtAYTD3yOJV3xLCUo-0UjUgfd0HqS1LDI"
+BOT_TOKEN = "8056560555:AAEtAYTD3yOJV3xLCUo-0UjUgfd0HqS1LDI"
 BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}"
 ALLOWED_CHAT_ID = -4776282039
 
@@ -19,6 +19,8 @@ def home():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     update = request.get_json()
+    print("UPDATE RECEIVED:", update)
+
     if not update or "message" not in update:
         return "no message", 200
 
@@ -26,12 +28,11 @@ def webhook():
     chat_id = message.get("chat", {}).get("id")
     text = message.get("text", "")
 
-    if chat_id != ALLOWED_CHAT_ID or not re.match(r"^\d+,", text):
-        return "ignored", 200
+    print(f"CHAT ID: {chat_id}, TEXT: {text}")
 
-    if text.lower() in ["/start", "hi"]:
-        send_message(chat_id, "Welcome to Barcabot! Send me a formation like:\n1,2-3-4,5-6")
-        return "ok", 200
+    if chat_id != ALLOWED_CHAT_ID or not re.match(r"^\d+,", text):
+        send_message(chat_id, "Send formation like: 1,2-3-4")
+        return "ignored", 200
 
     try:
         output_file = generate_formation_image(text)
